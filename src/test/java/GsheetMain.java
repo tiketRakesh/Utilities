@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class init_gsheet {
+public class GsheetMain {
     private static final String SPREADSHEET_ID = Config.SPREADSHEET_ID; // Replace with your spreadsheet ID
     private static final String RANGE = Config.SPREADSHEET_RANGE; // Replace with your sheet range
     private static final int SHOULD_RUN_INDEX = getShouldRunColumnIndex();

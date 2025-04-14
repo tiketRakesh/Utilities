@@ -5,7 +5,7 @@ import model.Result;
 import java.util.List;
 import java.util.Map;
 
-public class init_jira {
+public class JiraMain {
     public Result.Jira mainMethod() {
         Result.Jira jiraResult = new Result.Jira();
 

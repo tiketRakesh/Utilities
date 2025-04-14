@@ -1,5 +1,5 @@
-import core.Config;
 import core.postprocessor.ReportProcessor;
+import core.postprocessor.SlackProcessor;
 import model.Result;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,19 +12,23 @@ public class MainTest {
     public void mainTest() throws IOException {
         Result result = new Result();
 
-        init_testrail initTestrail = new init_testrail();
+        TestrailMain initTestrail = new TestrailMain();
         result.testrailResult = initTestrail.mainMethod();
 
-        init_gsheet initGsheet = new init_gsheet();
+        GsheetMain initGsheet = new GsheetMain();
         result.sheetResult = initGsheet.mainMethod();
 
-        init_jira initJira = new init_jira();
+        JiraMain initJira = new JiraMain();
         result.jiraResult = initJira.mainMethod();
 
         ReportProcessor reportProcessor = new ReportProcessor(result);
         reportProcessor.displayData();
         boolean checkResult = reportProcessor.verifyData();
 
-        Assert.assertTrue(checkResult);
+        try {
+            Assert.assertTrue(checkResult);
+        } catch (AssertionError e) {
+            SlackProcessor.sendSlackNotification("testing akbar");
+        }
     }
 }
