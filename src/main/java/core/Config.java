@@ -1,0 +1,61 @@
+package core;
+
+import core.io.PropertiesReader;
+import model.Environment;
+import model.Platform;
+import model.Vertical;
+
+import java.util.*;
+
+public class Config {
+    public static final Properties CONFIG_PROPERTIES = PropertiesReader.read("src/main/resources/config.properties");
+    public static final Properties CREDENTIALS_PROPERTIES = PropertiesReader.read("src/main/resources/credential.properties");
+    public static final String TESTRAIL_USERNAME = CREDENTIALS_PROPERTIES.getProperty("TESTRAIL_USERNAME");
+    public static final String TESTRAIL_PASSWORD = CREDENTIALS_PROPERTIES.getProperty("TESTRAIL_PASSWORD");
+    public static final String JIRA_USERNAME = CREDENTIALS_PROPERTIES.getProperty("JIRA_USERNAME");
+    public static final String JIRA_API_KEY = CREDENTIALS_PROPERTIES.getProperty("JIRA_API_KEY");
+    public static final Platform PLATFORM = Platform.valueOf(System.getProperty("platform").toUpperCase());
+    public static final Vertical VERTICAL = Vertical.valueOf(System.getProperty("vertical").toUpperCase());
+    public static final Environment ENVIRONMENT = Environment.valueOf(System.getProperty("environment").toUpperCase());
+    public static final String SPREADSHEET_ID = getSheetId();
+    public static final String SPREADSHEET_RANGE = getSheetRange();
+    public static final int TESTRAIL_PROJECT_ID = Integer.parseInt(CONFIG_PROPERTIES.getProperty("TESTRAIL_PROJECT_ID"));
+    public static final int TESTRAIL_SUITE_ID = getSuiteId();
+    public static List<Integer> TESTRAIL_SECTION_IDs = getSectionId();
+    public static final String JIRA_EPIC_ID = getEpicId();
+
+    private static List<Integer> getSectionId() {
+        List<Integer> result = new ArrayList<>();
+
+        String propertiesName = PLATFORM.getName() + "_" + VERTICAL.getName() + "_" + "SECTION_ID";
+        Arrays.stream(CONFIG_PROPERTIES.getProperty(propertiesName).split(",")).toList().forEach(sectionId -> result.add(Integer.parseInt(sectionId)));
+
+        return result;
+    }
+
+    private static int getSuiteId() {
+        String propertiesName = PLATFORM.getName() + "_" + "SUITE_ID";
+
+        return Integer.parseInt(CONFIG_PROPERTIES.getProperty(propertiesName));
+    }
+
+    private static String getSheetId() {
+        String propertiesName = PLATFORM.getName() + "_" + VERTICAL.getName() + "_" + "SHEET_ID";
+
+        return CONFIG_PROPERTIES.getProperty(propertiesName);
+    }
+
+    private static String getSheetRange() {
+        switch (PLATFORM) {
+            case APP, DWEB, PANEL -> {return "Sheet1!A1:N";}
+            case API -> {return "Sheet1!A1:X";}
+            default -> throw new NoSuchElementException("There is no platform type '"+PLATFORM+"'");
+        }
+    }
+
+    private static String getEpicId() {
+        String propertiesName = PLATFORM.getName() + "_" + VERTICAL.getName() + "_" + "EPIC_ID";
+
+        return CONFIG_PROPERTIES.getProperty(propertiesName);
+    }
+}

@@ -1,15 +1,21 @@
+import core.Config;
 import core.jira.JiraAPI;
+import model.Result;
 
 import java.util.List;
 import java.util.Map;
 
 public class init_jira {
-    public static void main(String[] args) {
-        JiraAPI jiraAPI = new JiraAPI();
-        List<Map<String, Object>> doneStories = jiraAPI.fetchDoneStories("QAAUT-453");
+    public Result.Jira mainMethod() {
+        Result.Jira jiraResult = new Result.Jira();
 
-        // Print the number of fetched stories
-        System.out.println("Total Done Stories: " + doneStories.size());
+        JiraAPI jiraAPI = new JiraAPI();
+
+        List<Map<String, Object>> doneStories = jiraAPI.fetchDoneStories(Config.JIRA_EPIC_ID);
+
+        jiraResult.jiraDoneCount = doneStories.size();
+
+        return jiraResult;
     }
 }
 
