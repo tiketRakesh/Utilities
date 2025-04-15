@@ -1,3 +1,4 @@
+import core.Config;
 import core.postprocessor.ReportProcessor;
 import core.postprocessor.SlackProcessor;
 import model.Result;
@@ -28,7 +29,29 @@ public class MainTest {
         try {
             Assert.assertTrue(checkResult);
         } catch (AssertionError e) {
-            SlackProcessor.sendSlackNotification("{\"text\":\"Testing Akbar\"}");
+            String messagePayload =
+                    "{" +
+                            "\"blocks\":[{" +
+                                "\"type\":\"section\"," +
+                                "\"text\":{" +
+                                    "\"type\":\"mrkdwn\"," +
+                                    "\"text\":\"" + Config.PLATFORM + "-" + Config.VERTICAL + "-" + Config.ENVIRONMENT + " is having difference in count @here\"" +
+                                "}," +
+                                "\"accessory\":{" +
+                                    "\"type\":\"button\"," +
+                                    "\"text\":{" +
+                                        "\"type\":\"plain_text\"," +
+                                        "\"text\":\"CheckCount\"," +
+                                        "\"emoji\":true" +
+                                    "}," +
+                                    "\"value\":\"JenkinsJob\"," +
+                                    "\"url\":\"https://selena.ggwp.red/job/Automation%20Count%20Checker/" + Config.JENKINS_BUILD_NUMBER + "/console\"," +
+                                    "\"action_id\":\"button-action\"" +
+                                "}" +
+                            "}]" +
+                    "}";
+
+            SlackProcessor.sendSlackNotification(messagePayload);
             Assert.fail("The count did not match");
         }
     }

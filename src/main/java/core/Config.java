@@ -21,6 +21,7 @@ public class Config {
     public static final String SPREADSHEET_RANGE = getSheetRange();
     public static final int TESTRAIL_PROJECT_ID = Integer.parseInt(CONFIG_PROPERTIES.getProperty("TESTRAIL_PROJECT_ID"));
     public static final int TESTRAIL_SUITE_ID = getSuiteId();
+    public static final String JENKINS_BUILD_NUMBER = CREDENTIALS_PROPERTIES.getProperty("JENKINS_JOB_NUMBER");
     public static List<Integer> TESTRAIL_SECTION_IDs = getSectionId();
     public static final String JIRA_EPIC_ID = getEpicId();
 
