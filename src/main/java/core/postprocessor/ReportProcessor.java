@@ -47,6 +47,6 @@ public class ReportProcessor {
 
         System.out.println("\n========== END OF MATCHING ==========");
 
-        return check1 && check2 && check3 && check4 & check5;
+        return check1 && check2 && check3 && check4 && check5;
     }
 }
