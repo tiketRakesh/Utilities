@@ -28,7 +28,7 @@ public class MainTest {
         try {
             Assert.assertTrue(checkResult);
         } catch (AssertionError e) {
-            SlackProcessor.sendSlackNotification("testing akbar");
+            SlackProcessor.sendSlackNotification("{\"text\":\"Testing Akbar\"}");
         }
     }
 }
