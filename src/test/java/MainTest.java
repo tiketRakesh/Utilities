@@ -29,6 +29,7 @@ public class MainTest {
             Assert.assertTrue(checkResult);
         } catch (AssertionError e) {
             SlackProcessor.sendSlackNotification("{\"text\":\"Testing Akbar\"}");
+            Assert.fail("The count did not match");
         }
     }
 }
