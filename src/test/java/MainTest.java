@@ -41,7 +41,7 @@ public class MainTest {
                                     "\"type\":\"button\"," +
                                     "\"text\":{" +
                                         "\"type\":\"plain_text\"," +
-                                        "\"text\":\"CheckCount\"," +
+                                        "\"text\":\"Check\"," +
                                         "\"emoji\":true" +
                                     "}," +
                                     "\"value\":\"JenkinsJob\"," +
