@@ -52,11 +52,13 @@ public class MainTest {
                                 "}," +
                                 "{" +
                                     "\"type\":\"section\"," +
-                                    "\"fields\":[" +
-                                        "{\"type\":\"plain_text\",\"text\":\"Jira 'Done' count: "+ result.jiraResult.jiraDoneCount +"\"}," +
-                                        "{\"type\":\"plain_text\",\"text\":\"Testrail 'Done & DoAgain' count: "+ result.testrailResult.automationStatusDoneDoAgainCount +"\"}," +
-                                        "{\"type\":\"plain_text\",\"text\":\"Testdata valid row count : "+ result.sheetResult.sheetEnvironmentYCount +"\"}" +
-                                    "]" +
+                                    "\"text\":{" +
+                                        "\"type\":\"plain_text\"," +
+                                        "\"text\":\"" +
+                                            "Jira 'Done' count: "+ result.jiraResult.jiraDoneCount +"\\n" +
+                                            "Testrail 'Done & Do Again' count: "+ result.testrailResult.automationStatusDoneDoAgainCount +"\\n" +
+                                            "Testdata valid row count : "+ result.sheetResult.sheetEnvironmentYCount +"\"" +
+                                    "}" +
                                 "}" +
                             "]" +
                     "}";
