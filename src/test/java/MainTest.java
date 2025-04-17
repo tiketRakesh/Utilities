@@ -31,24 +31,34 @@ public class MainTest {
         } catch (AssertionError e) {
             String messagePayload =
                     "{" +
-                            "\"blocks\":[{" +
-                                "\"type\":\"section\"," +
-                                "\"text\":{" +
-                                    "\"type\":\"mrkdwn\"," +
-                                    "\"text\":\"" + Config.PLATFORM + "-" + Config.VERTICAL + "-" + Config.ENVIRONMENT + " is having difference in count @here\"" +
-                                "}," +
-                                "\"accessory\":{" +
-                                    "\"type\":\"button\"," +
+                            "\"blocks\":[" +
+                                "{" +
+                                    "\"type\":\"section\"," +
                                     "\"text\":{" +
-                                        "\"type\":\"plain_text\"," +
-                                        "\"text\":\"Check\"," +
-                                        "\"emoji\":true" +
+                                        "\"type\":\"mrkdwn\"," +
+                                        "\"text\":\"" + Config.PLATFORM + "-" + Config.VERTICAL + "-" + Config.ENVIRONMENT + " is having difference in count @here\"" +
                                     "}," +
-                                    "\"value\":\"JenkinsJob\"," +
-                                    "\"url\":\"https://selena.ggwp.red/job/Automation%20Count%20Checker/" + Config.JENKINS_BUILD_NUMBER + "/console\"," +
-                                    "\"action_id\":\"button-action\"" +
+                                    "\"accessory\":{" +
+                                        "\"type\":\"button\"," +
+                                        "\"text\":{" +
+                                            "\"type\":\"plain_text\"," +
+                                            "\"text\":\"Check\"," +
+                                            "\"emoji\":true" +
+                                        "}," +
+                                        "\"value\":\"JenkinsJob\"," +
+                                        "\"url\":\"https://selena.ggwp.red/job/Automation%20Count%20Checker/" + Config.JENKINS_BUILD_NUMBER + "/console\"," +
+                                        "\"action_id\":\"button-action\"" +
+                                    "}" +
+                                "}," +
+                                "{" +
+                                    "\"type\":\"section\"," +
+                                    "\"fields\":[" +
+                                        "{\"type\":\"plain_text\",\"text\":\"Jira 'Done' count: "+ result.jiraResult.jiraDoneCount +"\"}," +
+                                        "{\"type\":\"plain_text\",\"text\":\"Testrail 'Done & DoAgain' count: "+ result.testrailResult.automationStatusDoneDoAgainCount +"\"}," +
+                                        "{\"type\":\"plain_text\",\"text\":\"Testdata valid row count : "+ result.sheetResult.sheetEnvironmentYCount +"\"}" +
+                                    "]" +
                                 "}" +
-                            "}]" +
+                            "]" +
                     "}";
 
             SlackProcessor.sendSlackNotification(messagePayload);
