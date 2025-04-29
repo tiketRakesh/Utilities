@@ -28,6 +28,7 @@ public class TestrailMain {
 
         testrailResult.automationStatusDoneDoAgainCount = groupedCases.get("all").size();
         testrailResult.automationStatusDoAgainCount = groupedCases.get(String.valueOf(model.Testrail.AutomationStatus.DO_AGAIN.getCode())).size();
+        testrailResult.groupedCasesData = groupedCases;
 
         return testrailResult;
     }

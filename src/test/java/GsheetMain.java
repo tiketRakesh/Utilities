@@ -7,77 +7,16 @@ import model.Result;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 public class GsheetMain {
     private static final String SPREADSHEET_ID = Config.SPREADSHEET_ID; // Replace with your spreadsheet ID
     private static final String RANGE = Config.SPREADSHEET_RANGE; // Replace with your sheet range
-    private static final int SHOULD_RUN_INDEX = getShouldRunColumnIndex();
-    private static final int ENVIRONMENT_INDEX = getEnvironmentColumnIndex();
-    private static final int TESTDATA_INDEX = getTestdataColumnIndex();
-
-    private static int getShouldRunColumnIndex() {
-        switch (Config.PLATFORM) {
-            case APP, DWEB, PANEL -> {
-                return 3;
-            }
-            case API -> {
-                return 6;
-            }
-            default -> {
-                throw new NoSuchElementException("No such environment " + Config.PLATFORM);
-            }
-        }
-    }
-
-    private static int getEnvironmentColumnIndex() {
-        int index = 0;
-
-        switch (Config.PLATFORM) {
-            case APP, DWEB, PANEL -> {
-                index = 4;
-                if (Config.ENVIRONMENT.equals(Environment.PREPROD)) index += 2;
-                if (Config.ENVIRONMENT.equals(Environment.PROD)) index += 1;
-
-                return index;
-            }
-            case API -> {
-                index = 7;
-                if (Config.ENVIRONMENT.equals(Environment.PREPROD)) index += 1;
-                if (Config.ENVIRONMENT.equals(Environment.PROD)) index += 2;
-
-                return index;
-            }
-            default -> {
-                throw new NoSuchElementException("No such environment " + Config.PLATFORM);
-            }
-        }
-    }
-
-    private static int getTestdataColumnIndex() {
-        int index = 0;
-
-        switch (Config.PLATFORM) {
-            case APP, DWEB, PANEL -> {
-                index = 11;
-                if (Config.ENVIRONMENT.equals(Environment.PREPROD)) index += 2;
-                if (Config.ENVIRONMENT.equals(Environment.PROD)) index += 1;
-
-                return index;
-            }
-            case API -> {
-                index = 13;
-                if (Config.ENVIRONMENT.equals(Environment.PREPROD)) index += 1;
-                if (Config.ENVIRONMENT.equals(Environment.PROD)) index += 2;
-
-                return index;
-            }
-            default -> {
-                throw new NoSuchElementException("No such environment " + Config.PLATFORM);
-            }
-        }
-    }
+    private static final int SHOULD_RUN_INDEX = Config.SHOULD_RUN_INDEX;
+    private static final int ENVIRONMENT_INDEX = Config.ENVIRONMENT_INDEX;
+    private static final int TESTDATA_INDEX = Config.TESTDATA_INDEX;
 
     public Result.Sheet mainMethod() throws IOException {
         Result.Sheet sheetResult = new Result.Sheet();
@@ -102,6 +41,8 @@ public class GsheetMain {
         int environmentTrueCount = 0;
         List<String> testIds = new ArrayList<>();
 
+        int invalidTestIdsCount = 0;
+        sheetResult.sheetData = new HashMap<>();
         for (int i = 1; i < rows.size(); i++) {
             List<Object> row = rows.get(i);
 
@@ -117,7 +58,16 @@ public class GsheetMain {
             String testId = GSheetAPI.extractTestId(testdataParams);
 
             if (testId != null) {
-                testIds.add(testId);
+                if (!testIds.contains(testId)) {
+                    testIds.add(testId);
+                    sheetResult.sheetData.put(testId, row);
+                } else {
+                    sheetResult.sheetData.put("duplicate" + invalidTestIdsCount, row);
+                    invalidTestIdsCount++;
+                }
+            } else {
+                sheetResult.sheetData.put("invalid" + invalidTestIdsCount, row);
+                invalidTestIdsCount++;
             }
         }
 

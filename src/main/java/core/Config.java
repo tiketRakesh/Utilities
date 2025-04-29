@@ -24,6 +24,71 @@ public class Config {
     public static final String JENKINS_BUILD_NUMBER = CREDENTIALS_PROPERTIES.getProperty("JENKINS_JOB_NUMBER");
     public static List<Integer> TESTRAIL_SECTION_IDs = getSectionId();
     public static final String JIRA_EPIC_ID = getEpicId();
+    public static final int SHOULD_RUN_INDEX = getShouldRunColumnIndex();
+    public static final int ENVIRONMENT_INDEX = getEnvironmentColumnIndex();
+    public static final int TESTDATA_INDEX = getTestdataColumnIndex();
+
+    private static int getShouldRunColumnIndex() {
+        switch (Config.PLATFORM) {
+            case APP, DWEB, PANEL -> {
+                return 3;
+            }
+            case API -> {
+                return 6;
+            }
+            default -> {
+                throw new NoSuchElementException("No such environment " + Config.PLATFORM);
+            }
+        }
+    }
+
+    private static int getEnvironmentColumnIndex() {
+        int index = 0;
+
+        switch (Config.PLATFORM) {
+            case APP, DWEB, PANEL -> {
+                index = 4;
+                if (Config.ENVIRONMENT.equals(Environment.PREPROD)) index += 2;
+                if (Config.ENVIRONMENT.equals(Environment.PROD)) index += 1;
+
+                return index;
+            }
+            case API -> {
+                index = 7;
+                if (Config.ENVIRONMENT.equals(Environment.PREPROD)) index += 1;
+                if (Config.ENVIRONMENT.equals(Environment.PROD)) index += 2;
+
+                return index;
+            }
+            default -> {
+                throw new NoSuchElementException("No such environment " + Config.PLATFORM);
+            }
+        }
+    }
+
+    private static int getTestdataColumnIndex() {
+        int index = 0;
+
+        switch (Config.PLATFORM) {
+            case APP, DWEB, PANEL -> {
+                index = 11;
+                if (Config.ENVIRONMENT.equals(Environment.PREPROD)) index += 2;
+                if (Config.ENVIRONMENT.equals(Environment.PROD)) index += 1;
+
+                return index;
+            }
+            case API -> {
+                index = 13;
+                if (Config.ENVIRONMENT.equals(Environment.PREPROD)) index += 1;
+                if (Config.ENVIRONMENT.equals(Environment.PROD)) index += 2;
+
+                return index;
+            }
+            default -> {
+                throw new NoSuchElementException("No such environment " + Config.PLATFORM);
+            }
+        }
+    }
 
     private static List<Integer> getSectionId() {
         List<Integer> result = new ArrayList<>();

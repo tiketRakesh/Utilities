@@ -14,6 +14,7 @@ public class JiraMain {
         List<Map<String, Object>> doneStories = jiraAPI.fetchDoneStories(Config.JIRA_EPIC_ID);
 
         jiraResult.jiraDoneCount = doneStories.size();
+        jiraResult.jiraDoneStories = doneStories;
 
         return jiraResult;
     }
