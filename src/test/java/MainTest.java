@@ -56,8 +56,23 @@ public class MainTest {
                                         "\"type\":\"plain_text\"," +
                                         "\"text\":\"" +
                                             "Jira 'Done' count: "+ result.jiraResult.jiraDoneCount +"\\n" +
-                                            "Testrail 'Done & Do Again' count: "+ result.testrailResult.automationStatusDoneDoAgainCount +"\\n" +
-                                            "Testdata valid row count : "+ result.sheetResult.sheetEnvironmentYCount +"\"" +
+                                            "Testrail 'Done & Do Again' count: "+ (result.testrailResult.automationStatusDoneDoAgainCount - result.testrailResult.automationStatusDoAgainCount) + " + " + result.testrailResult.automationStatusDoAgainCount +"\\n" +
+                                            "Testdata valid row count : "+ result.sheetResult.sheetShouldRunYCount +" (Disclaimer: should match testrail done count)\"" +
+                                    "}" +
+                                "}," +
+                                "{" +
+                                    "\"type\":\"section\"," +
+                                    "\"text\":{" +
+                                        "\"type\":\"mrkdwn\"," +
+                                        "\"text\":\"" +
+                                            "*Leftover Testrail*\\n" +
+                                            String.join(", ", ReportProcessor.RESULT.testrailResult.testrailLeftover) + "\\n" +
+                                            "*Leftover Sheet*\\n" +
+                                            String.join(", ", ReportProcessor.RESULT.sheetResult.sheetLeftover) + "\\n" +
+                                            "*Missing Testdata*\\n" +
+                                            String.join(", ", ReportProcessor.RESULT.sheetResult.missingTestData) + "\\n" +
+                                            "*Wrong Testdata*\\n" +
+                                            String.join(", ", ReportProcessor.RESULT.sheetResult.wrongTestData) + "\\n\"" +
                                     "}" +
                                 "}" +
                             "]" +

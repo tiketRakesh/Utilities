@@ -14,12 +14,16 @@ public class Result {
         public int validTestIdsExtracted;
         public int sheetEnvironmentYCount;
         public Map<String, List<Object>> sheetData;
+        public List<String> sheetLeftover;
+        public List<String> missingTestData;
+        public List<String> wrongTestData;
     }
 
     public static class Testrail {
         public int automationStatusDoAgainCount;
         public int automationStatusDoneDoAgainCount;
         public Map<String, List<Map<String, Object>>> groupedCasesData;
+        public List<String> testrailLeftover;
     }
 
     public static class Jira {

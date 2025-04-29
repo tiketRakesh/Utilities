@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import java.util.*;
 
 public class ReportProcessor {
-    private static Result RESULT = null;
+    public static Result RESULT = null;
 
     public ReportProcessor(Result result) {
         RESULT = result;
@@ -97,21 +97,33 @@ public class ReportProcessor {
 //        for (String jiraId: jiraMap.keySet()) {
 //            System.out.println(jiraId);
 //        }
-//        System.out.println("===============LEFTOVER TESTRAIL==================");
-//        for (Map<String, Object> testrailData: testrailList) {
-//            JSONObject testrailDataJson = new JSONObject(testrailData);
-//            System.out.println(testrailDataJson.getInt("id"));
-//        }
-//        System.out.println("=================LEFTOVER SHEET===================");
-//        for (String key: RESULT.sheetResult.sheetData.keySet()) {
-//            List<Object> row = RESULT.sheetResult.sheetData.get(key);
-//            System.out.println(row.get(0).toString());
-//        }
+        System.out.println("===============LEFTOVER TESTRAIL==================");
+        System.out.println("Testrail case id list which is not in matched with testdata sheet");
+        RESULT.testrailResult.testrailLeftover = new ArrayList<>();
+        for (Map<String, Object> testrailData: testrailList) {
+            JSONObject testrailDataJson = new JSONObject(testrailData);
+            String caseId = String.valueOf(testrailDataJson.getInt("id"));
+            System.out.println(caseId);
+            RESULT.testrailResult.testrailLeftover.add(caseId);
+        }
+        System.out.println("=================LEFTOVER SHEET===================");
+        System.out.println("Test method name list which is not in matched with testrail case id");
+        RESULT.sheetResult.sheetLeftover = new ArrayList<>();
+        for (String key: RESULT.sheetResult.sheetData.keySet()) {
+            List<Object> row = RESULT.sheetResult.sheetData.get(key);
+            String testMethodName = row.get(0).toString();
+            System.out.println(testMethodName);
+            RESULT.sheetResult.sheetLeftover.add(testMethodName);
+        }
         System.out.println("================MISSING TESTDATA==================");
+        System.out.println("Testrail case id list which is not in testdata sheet");
+        RESULT.sheetResult.missingTestData = missingTestDataCaseId;
         for (String caseId: missingTestDataCaseId) {
             System.out.println(caseId);
         }
         System.out.println("=================WRONG TESTDATA===================");
+        System.out.println("Testrail case id list which is in automation status 'Do Again' but shouldRun still 'y' or for testdata which environment column is not 'y'");
+        RESULT.sheetResult.wrongTestData = wrongTestDataCaseId;
         for (String caseId: wrongTestDataCaseId) {
             System.out.println(caseId);
         }
