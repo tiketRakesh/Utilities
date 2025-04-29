@@ -62,6 +62,9 @@ public class ReportProcessor {
             if (combinedData.sheetData == null) {
                 missingTestDataCaseId.add(combinedData.caseId);
             } else {
+                testrailList.remove(e);
+                RESULT.sheetResult.sheetData.remove(combinedData.caseId);
+
                 boolean check1 = combinedData.sheetData.get(Config.ENVIRONMENT_INDEX).toString().equalsIgnoreCase("y");
                 boolean check2 = false;
                 if (combinedData.testrailData.getInt("custom_automation_status") == 1) {
@@ -84,8 +87,6 @@ public class ReportProcessor {
                 }
             }
 //                        jiraMap.remove(s);
-            testrailList.remove(e);
-            RESULT.sheetResult.sheetData.remove(combinedData.caseId);
 //                    }
 //                    break;
 //                }
