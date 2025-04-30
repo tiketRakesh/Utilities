@@ -1,6 +1,7 @@
 package core.postprocessor;
 
 import core.Config;
+import model.Platform;
 import model.Result;
 import org.json.JSONObject;
 
@@ -11,6 +12,69 @@ public class ReportProcessor {
 
     public ReportProcessor(Result result) {
         RESULT = result;
+    }
+
+    public static String getDetailedReport() {
+        String text =
+                "{" +
+                    "\"type\":\"section\"," +
+                    "\"text\":{" +
+                        "\"type\":\"mrkdwn\"," +
+                        "\"text\":\"" +
+                            getLeftoverTestrail() +
+                            getLeftoverSheet() +
+                            getWrongTestdata() +
+                    "\"}" +
+                "}";
+
+        return text;
+    }
+
+    private static String getLeftoverTestrail() {
+        String text = "";
+
+        if (!RESULT.testrailResult.testrailLeftover.isEmpty()) {
+            text = "*Leftover Testrail* " +
+                   "(_Testrail case id list which is not in matched with testdata sheet_)\\n" +
+                   String.join(", ", RESULT.testrailResult.testrailLeftover) + "\\n";
+        }
+
+        return text;
+    }
+
+    private static String getLeftoverSheet() {
+        String text = "";
+
+        if (!RESULT.sheetResult.sheetLeftover.isEmpty()) {
+            text = "*Leftover Sheet* " +
+                   "(_Test method name list which is not in matched with testrail case id_)\\n" +
+                   String.join(", ", RESULT.sheetResult.sheetLeftover) + "\\n";
+
+        }
+
+        return text;
+    }
+
+    private static String getMissingTestdata() {
+        String text = "";
+
+        if (!RESULT.sheetResult.missingTestData.isEmpty()) {
+            text = "*Missing Testdata*\\n" + String.join(", ", RESULT.sheetResult.missingTestData) + "\\n";
+        }
+
+        return text;
+    }
+
+    private static String getWrongTestdata() {
+        String text = "";
+
+        if (!RESULT.sheetResult.wrongTestData.isEmpty()) {
+            text = "*Wrong Testdata* " +
+                   "(_Testrail case id list which is in automation status 'Do Again' but shouldRun still 'y' or for testdata which environment column is not 'y'_)\\n" +
+                   String.join(", ", RESULT.sheetResult.wrongTestData) + "\\n";
+        }
+
+        return text;
     }
 
     static class CombinedData {
@@ -111,16 +175,21 @@ public class ReportProcessor {
         RESULT.sheetResult.sheetLeftover = new ArrayList<>();
         for (String key: RESULT.sheetResult.sheetData.keySet()) {
             List<Object> row = RESULT.sheetResult.sheetData.get(key);
-            String testMethodName = row.get(0).toString();
+            String testMethodName = "";
+
+            if (Config.PLATFORM.equals(Platform.APP)) {
+                testMethodName += row.get(0).toString() + "-" + row.get(2).toString();
+            }
+
             System.out.println(testMethodName);
             RESULT.sheetResult.sheetLeftover.add(testMethodName);
         }
-        System.out.println("================MISSING TESTDATA==================");
-        System.out.println("Testrail case id list which is not in testdata sheet");
-        RESULT.sheetResult.missingTestData = missingTestDataCaseId;
-        for (String caseId: missingTestDataCaseId) {
-            System.out.println(caseId);
-        }
+//        System.out.println("================MISSING TESTDATA==================");
+//        System.out.println("Testrail case id list which is not in testdata sheet");
+//        RESULT.sheetResult.missingTestData = missingTestDataCaseId;
+//        for (String caseId: missingTestDataCaseId) {
+//            System.out.println(caseId);
+//        }
         System.out.println("=================WRONG TESTDATA===================");
         System.out.println("Testrail case id list which is in automation status 'Do Again' but shouldRun still 'y' or for testdata which environment column is not 'y'");
         RESULT.sheetResult.wrongTestData = wrongTestDataCaseId;
