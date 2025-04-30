@@ -223,7 +223,6 @@ public class ReportProcessor {
         return check1 && check2 && check3 && check4 && check5 &&
                 RESULT.testrailResult.testrailLeftover.isEmpty() &&
                 RESULT.sheetResult.sheetLeftover.isEmpty() &&
-                RESULT.sheetResult.missingTestData.isEmpty() &&
                 RESULT.sheetResult.wrongTestData.isEmpty();
     }
 }
