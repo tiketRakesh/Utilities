@@ -50,16 +50,6 @@ public class MainTest {
                                         "\"action_id\":\"button-action\"" +
                                     "}" +
                                 "}," +
-                                "{" +
-                                    "\"type\":\"section\"," +
-                                    "\"text\":{" +
-                                        "\"type\":\"plain_text\"," +
-                                        "\"text\":\"" +
-                                            "Jira 'Done' count: "+ result.jiraResult.jiraDoneCount +"\\n" +
-                                            "Testrail 'Done & Do Again' count: "+ (result.testrailResult.automationStatusDoneDoAgainCount - result.testrailResult.automationStatusDoAgainCount) + " + " + result.testrailResult.automationStatusDoAgainCount +"\\n" +
-                                            "Testdata valid row count : "+ result.sheetResult.sheetShouldRunYCount +" (Disclaimer: should match testrail done count)\"" +
-                                    "}" +
-                                "}," +
                                 ReportProcessor.getDetailedReport() +
                             "]" +
                     "}";
