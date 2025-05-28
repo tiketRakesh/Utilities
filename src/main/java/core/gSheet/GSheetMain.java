@@ -1,9 +1,10 @@
+package core.gSheet;
+
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import core.Config;
 import core.gSheet.GSheetAPI;
-import model.Environment;
-import model.Result;
+import model.testMappingValidator.Result;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class GsheetMain {
+public class GSheetMain {
     private static final String SPREADSHEET_ID = Config.SPREADSHEET_ID; // Replace with your spreadsheet ID
     private static final String RANGE = Config.SPREADSHEET_RANGE; // Replace with your sheet range
     private static final int SHOULD_RUN_INDEX = Config.SHOULD_RUN_INDEX;

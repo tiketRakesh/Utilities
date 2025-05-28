@@ -94,21 +94,43 @@ public class Config {
         List<Integer> result = new ArrayList<>();
 
         String propertiesName = PLATFORM.getName() + "_" + VERTICAL.getName() + "_" + "SECTION_ID";
-        Arrays.stream(CONFIG_PROPERTIES.getProperty(propertiesName).split(",")).toList().forEach(sectionId -> result.add(Integer.parseInt(sectionId)));
+        String sectionIds = CONFIG_PROPERTIES.getProperty(propertiesName);
+        
+        if (sectionIds == null || sectionIds.trim().isEmpty()) {
+            throw new IllegalStateException("Missing or empty SECTION_ID for " + PLATFORM + "_" + VERTICAL);
+        }
+
+        Arrays.stream(sectionIds.split(","))
+              .filter(id -> !id.trim().isEmpty())
+              .forEach(sectionId -> result.add(Integer.parseInt(sectionId.trim())));
+
+        if (result.isEmpty()) {
+            throw new IllegalStateException("No valid SECTION_IDs found for " + PLATFORM + "_" + VERTICAL);
+        }
 
         return result;
     }
 
     private static int getSuiteId() {
         String propertiesName = PLATFORM.getName() + "_" + "SUITE_ID";
+        String suiteId = CONFIG_PROPERTIES.getProperty(propertiesName);
+        
+        if (suiteId == null || suiteId.trim().isEmpty()) {
+            throw new IllegalStateException("Missing or empty SUITE_ID for " + PLATFORM);
+        }
 
-        return Integer.parseInt(CONFIG_PROPERTIES.getProperty(propertiesName));
+        return Integer.parseInt(suiteId.trim());
     }
 
     private static String getSheetId() {
         String propertiesName = PLATFORM.getName() + "_" + VERTICAL.getName() + "_" + "SHEET_ID";
+        String sheetId = CONFIG_PROPERTIES.getProperty(propertiesName);
+        
+        if (sheetId == null || sheetId.trim().isEmpty()) {
+            throw new IllegalStateException("Missing or empty SHEET_ID for " + PLATFORM + "_" + VERTICAL);
+        }
 
-        return CONFIG_PROPERTIES.getProperty(propertiesName);
+        return sheetId.trim();
     }
 
     private static String getSheetRange() {
@@ -121,7 +143,12 @@ public class Config {
 
     private static String getEpicId() {
         String propertiesName = PLATFORM.getName() + "_" + VERTICAL.getName() + "_" + "EPIC_ID";
+        String epicId = CONFIG_PROPERTIES.getProperty(propertiesName);
+        
+        if (epicId == null || epicId.trim().isEmpty()) {
+            throw new IllegalStateException("Missing or empty EPIC_ID for " + PLATFORM + "_" + VERTICAL);
+        }
 
-        return CONFIG_PROPERTIES.getProperty(propertiesName);
+        return epicId.trim();
     }
 }

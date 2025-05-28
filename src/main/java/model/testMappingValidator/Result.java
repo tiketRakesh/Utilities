@@ -1,4 +1,4 @@
-package model;
+package model.testMappingValidator;
 
 import java.util.List;
 import java.util.Map;

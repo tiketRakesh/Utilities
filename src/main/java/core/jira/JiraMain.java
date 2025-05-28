@@ -1,6 +1,8 @@
+package core.jira;
+
 import core.Config;
 import core.jira.JiraAPI;
-import model.Result;
+import model.testMappingValidator.Result;
 
 import java.util.List;
 import java.util.Map;

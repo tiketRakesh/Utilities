@@ -2,7 +2,8 @@ package core.postprocessor;
 
 import core.Config;
 import model.Platform;
-import model.Result;
+import model.testMappingValidator.Result;
+
 import org.json.JSONObject;
 
 import java.util.*;

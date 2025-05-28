@@ -1,12 +1,15 @@
+package core.testRail;
+
 import core.Config;
 import core.testRail.TestRailAPI;
-import model.Result;
+import model.testMappingValidator.Result;
+import model.testMappingValidator.Testrail;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class TestrailMain {
+public class TestRailMain {
     public Result.Testrail mainMethod() {
         String baseUrl = "https://tiket.testrail.com";
         String username = Config.TESTRAIL_USERNAME;
@@ -19,15 +22,15 @@ public class TestrailMain {
         int suiteId = Config.TESTRAIL_SUITE_ID;
         List<Integer> sectionIds = Config.TESTRAIL_SECTION_IDs;
 
-        int customAutomationType = model.Testrail.AutomationType.YES.getCode();
-        List<Integer> customAutomationStatus =  Arrays.asList(model.Testrail.AutomationStatus.DONE.getCode(), model.Testrail.AutomationStatus.DO_AGAIN.getCode());
-        int customTcStatus = model.Testrail.TestCaseStatus.APPROVED.getCode();
+        int customAutomationType = Testrail.AutomationType.YES.getCode();
+        List<Integer> customAutomationStatus =  Arrays.asList(Testrail.AutomationStatus.DONE.getCode(), Testrail.AutomationStatus.DO_AGAIN.getCode());
+        int customTcStatus = Testrail.TestCaseStatus.APPROVED.getCode();
 
         Map<String, List<Map<String, Object>>> groupedCases = testRailAPI.fetchAndGroupTestCases(
                 projectId, suiteId, sectionIds, customAutomationType, customAutomationStatus,customTcStatus);
 
         testrailResult.automationStatusDoneDoAgainCount = groupedCases.get("all").size();
-        testrailResult.automationStatusDoAgainCount = groupedCases.get(String.valueOf(model.Testrail.AutomationStatus.DO_AGAIN.getCode())).size();
+        testrailResult.automationStatusDoAgainCount = groupedCases.get(String.valueOf(Testrail.AutomationStatus.DO_AGAIN.getCode())).size();
         testrailResult.groupedCasesData = groupedCases;
 
         return testrailResult;

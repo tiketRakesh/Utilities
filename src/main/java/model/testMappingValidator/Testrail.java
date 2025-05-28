@@ -1,4 +1,4 @@
-package model;
+package model.testMappingValidator;
 
 public class Testrail {
     public enum AutomationStatus {
