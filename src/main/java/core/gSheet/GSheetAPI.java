@@ -22,8 +22,6 @@ import com.google.auth.oauth2.ServiceAccountCredentials;
 public class GSheetAPI {
 
     private static final String APPLICATION_NAME = "Google Sheets API Java Quickstart";
-    private static final String SPREADSHEET_ID = ""; // Replace with your spreadsheet ID
-    private static final String RANGE = "Sheet1!A1:M"; // Replace with your sheet range
     private static final String CREDENTIALS_FILE_PATH = "/oauth2.json";
 
 
@@ -55,7 +53,12 @@ public class GSheetAPI {
         Matcher matcher = pattern.matcher(params);
 
         if (matcher.find()) {
-            return matcher.group(1);
+            try {
+                Integer.parseInt(matcher.group(1));
+                return matcher.group(1);
+            } catch (Exception e) {
+                return null;
+            }
         }
 
         return null;

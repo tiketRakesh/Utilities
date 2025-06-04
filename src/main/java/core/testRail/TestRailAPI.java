@@ -19,7 +19,7 @@ public class TestRailAPI {
         this.authHeader = Base64.getEncoder().encodeToString((username + ":" + apiKey).getBytes());
     }
 
-    public List<Map<String, Object>> fetchAndGroupTestCases(
+    public Map<String, List<Map<String, Object>>> fetchAndGroupTestCases(
             int projectId, int suiteId, List<Integer> sectionIds, int customAutomationType, List<Integer> customAutomationStatuses,int customTcStatus) {
 
         List<Map<String, Object>> allCases = new ArrayList<>();
@@ -60,23 +60,29 @@ public class TestRailAPI {
             e.printStackTrace();
         }
 
-        //do Again cases
+        Map<String, List<Map<String, Object>>> result = new HashMap<>();
 
-        List<Map<String, Object>> doAgainCases= allCases.stream()
-                .filter(testCase -> sectionIds.contains((Integer) testCase.get("section_id")))
-                .filter(testCase -> testCase.get("custom_automation_type").equals(customAutomationType))
-                .filter(testCase -> customAutomationStatuses.get(1).equals((Integer) testCase.get("custom_automation_status")))
-                .filter(testCase -> testCase.get("custom_tcstatus").equals(customTcStatus))
-                .collect(Collectors.toList());
+        for (int e : customAutomationStatuses) {
+            List<Map<String, Object>> filteredCases = allCases.stream()
+                    .filter(testCase -> sectionIds.contains((Integer) testCase.get("section_id")))
+                    .filter(testCase -> testCase.get("custom_automation_type").equals(customAutomationType))
+                    .filter(testCase -> e == (Integer) testCase.get("custom_automation_status"))
+                    .filter(testCase -> testCase.get("custom_tcstatus").equals(customTcStatus))
+                    .toList();
 
-        System.out.println("Do Again cases are ::::" + doAgainCases.size());
-        // Filter cases based on input parameters
-        return allCases.stream()
+            result.put(String.valueOf(e), filteredCases);
+        }
+
+        List<Map<String, Object>> allFilteredCases = allCases.stream()
                 .filter(testCase -> sectionIds.contains((Integer) testCase.get("section_id")))
                 .filter(testCase -> testCase.get("custom_automation_type").equals(customAutomationType))
                 .filter(testCase -> customAutomationStatuses.contains((Integer) testCase.get("custom_automation_status")))
                 .filter(testCase -> testCase.get("custom_tcstatus").equals(customTcStatus))
                 .collect(Collectors.toList());
+
+        result.put("all", allFilteredCases);
+
+        return result;
     }
 }
 
