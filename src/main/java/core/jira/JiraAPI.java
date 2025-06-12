@@ -2,8 +2,9 @@ package core.jira;
 import core.Config;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -12,11 +13,11 @@ import java.util.Map;
 
 public class JiraAPI {
 
-    private final String baseUrl;
-    private final String authHeader;
+    public final String baseUrl;
+    public final String authHeader;
 
     public JiraAPI() {
-        this.baseUrl = "https://borobudur.atlassian.net";
+        this.baseUrl = "https://borobudur.atlassian.net/rest/api/3/search";
         this.authHeader = Base64.getEncoder().encodeToString((Config.JIRA_USERNAME + ":" + Config.JIRA_API_KEY).getBytes());
     }
 
@@ -69,4 +70,6 @@ public class JiraAPI {
 
         return doneStories;
     }
+
+
 }

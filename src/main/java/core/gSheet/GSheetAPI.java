@@ -9,21 +9,29 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.auth.oauth2.ServiceAccountCredentials;
+import core.Config;
 
 
 public class GSheetAPI {
 
     private static final String APPLICATION_NAME = "Google Sheets API Java Quickstart";
     private static final String CREDENTIALS_FILE_PATH = "/oauth2.json";
+    public  Sheets sheetsService = null;
 
+    public GSheetAPI() {
+        //this.baseUrl = "https://borobudur.atlassian.net";
+        //this.authHeader = Base64.getEncoder().encodeToString((Config.JIRA_USERNAME + ":" + Config.JIRA_API_KEY).getBytes());
+        try {
+            sheetsService = getSheetsService();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static Sheets getSheetsService() throws IOException {
         GoogleCredentials credentials;
